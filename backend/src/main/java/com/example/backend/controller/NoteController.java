@@ -52,6 +52,21 @@ public class NoteController {
         return ResponseEntity.ok(noteResponse);
     }
 
+    @PutMapping("/{noteId}")
+    public ResponseEntity<NoteResponse> updateNote(@Valid @RequestBody NoteRequest note,
+                                                   @PathVariable String noteId) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        NoteDto noteDto = modelMapper.map(note, NoteDto.class);
+        noteDto.setNoteId(noteId);
+
+        NoteDto updatedNoteDto = this.noteService.updateNote(noteDto);
+
+        NoteResponse noteResponse = modelMapper.map(updatedNoteDto, NoteResponse.class);
+
+        return ResponseEntity.ok(noteResponse);
+    }
+
 
 
 }

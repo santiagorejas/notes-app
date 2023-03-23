@@ -62,4 +62,26 @@ public class NoteServiceImpl implements NoteService {
 
         return pagedNoteDto;
     }
+
+    @Override
+    public NoteDto updateNote(NoteDto noteDto) {
+
+
+        NoteEntity noteEntity = this.noteRepository
+                .findByNoteId(noteDto.getNoteId())
+                .orElseThrow();
+
+        noteEntity.setTitle(noteDto.getTitle());
+        noteEntity.setContent(noteDto.getContent());
+        noteEntity.setLastEdited(new Date());
+
+        NoteEntity updatedNoteEntity = this.noteRepository.save(noteEntity);
+
+        ModelMapper modelMapper = new ModelMapper();
+        NoteDto updatedNoteDto = modelMapper.map(updatedNoteEntity, NoteDto.class);
+
+        return updatedNoteDto;
+
+    }
+
 }
