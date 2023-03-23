@@ -19,6 +19,7 @@ function App() {
             setShowArchived((pre) => !pre);
             setPage(1);
           }}
+          showArchived={showArchived}
         />
         <NotesList showArchived={showArchived} page={page} setPage={setPage} />
       </QueryClientProvider>
