@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.NoteDto;
 import com.example.backend.dto.PagedDto;
+import com.example.backend.model.request.ArchiveRequest;
 import com.example.backend.model.request.NoteRequest;
 import com.example.backend.model.response.MessageResponse;
 import com.example.backend.model.response.NoteResponse;
@@ -9,7 +10,6 @@ import com.example.backend.model.response.PagedResponse;
 import com.example.backend.service.NoteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +66,17 @@ public class NoteController {
         NoteResponse noteResponse = modelMapper.map(updatedNoteDto, NoteResponse.class);
 
         return ResponseEntity.ok(noteResponse);
+    }
+
+
+    @PutMapping("/{noteId}/archive")
+    public ResponseEntity<MessageResponse> archiveNote(@PathVariable String noteId,
+                                                       @Valid @RequestBody ArchiveRequest archiveRequest) {
+
+        this.noteService.archiveNote(noteId, archiveRequest.getArchive());
+
+
+        return ResponseEntity.ok(new MessageResponse("Note archived status updated successfully."));
     }
 
     @DeleteMapping("/{noteId}")

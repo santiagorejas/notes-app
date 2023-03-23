@@ -3,6 +3,7 @@ package com.example.backend.service.impl;
 import com.example.backend.dto.NoteDto;
 import com.example.backend.dto.PagedDto;
 import com.example.backend.model.entity.NoteEntity;
+import com.example.backend.model.request.ArchiveRequest;
 import com.example.backend.repository.NoteRepository;
 import com.example.backend.service.NoteService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -99,5 +105,19 @@ public class NoteServiceImpl implements NoteService {
 
         this.noteRepository.delete(noteEntity);
     }
+
+    @Override
+    public void archiveNote(String noteId, boolean archive) {
+
+        NoteEntity noteEntity = this.noteRepository
+                .findByNoteId(noteId)
+                .orElseThrow();
+
+        noteEntity.setArchived(archive);
+
+        this.noteRepository.save(noteEntity);
+
+    }
+
 
 }

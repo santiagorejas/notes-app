@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.dto.NoteDto;
 import com.example.backend.dto.PagedDto;
+import com.example.backend.model.request.ArchiveRequest;
 
 public interface NoteService {
     NoteDto createNote(NoteDto noteDto);
@@ -11,4 +12,6 @@ public interface NoteService {
     NoteDto updateNote(NoteDto noteDto);
 
     void deleteNote(String noteId);
+
+    void archiveNote(String noteId, boolean archive);
 }
