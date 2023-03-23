@@ -8,3 +8,16 @@
   max-width: 60rem;
   margin: 5rem auto;
 }
+
+.modal-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+}
+
+.modal-btns {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}

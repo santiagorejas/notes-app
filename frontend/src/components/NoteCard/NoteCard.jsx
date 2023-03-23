@@ -4,7 +4,14 @@ import formatDate from "../../utils/format-date";
 import classes from "./NoteCard.module.css";
 
 const NoteCard = (props) => {
-  const { title, lastEdited, archived, noteId, onArchiveHandler } = props;
+  const {
+    title,
+    lastEdited,
+    archived,
+    noteId,
+    onArchiveHandler,
+    onDeleteHandler,
+  } = props;
 
   return (
     <li className={classes["note-card"]}>
@@ -23,7 +30,7 @@ const NoteCard = (props) => {
         <button>
           <AiFillEdit />
         </button>
-        <button>
+        <button onClick={() => onDeleteHandler(props)}>
           <AiFillDelete />
         </button>
       </div>
