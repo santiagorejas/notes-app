@@ -14,4 +14,6 @@ public interface NoteService {
     void deleteNote(String noteId);
 
     void archiveNote(String noteId, boolean archive);
+
+    NoteDto getNoteDetails(String noteId);
 }

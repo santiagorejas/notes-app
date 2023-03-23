@@ -5,6 +5,7 @@ import com.example.backend.dto.PagedDto;
 import com.example.backend.model.request.ArchiveRequest;
 import com.example.backend.model.request.NoteRequest;
 import com.example.backend.model.response.MessageResponse;
+import com.example.backend.model.response.NoteDetailsResponse;
 import com.example.backend.model.response.NoteResponse;
 import com.example.backend.model.response.PagedResponse;
 import com.example.backend.service.NoteService;
@@ -39,6 +40,17 @@ public class NoteController {
         return ResponseEntity.ok(notesResponse);
 
 
+    }
+
+    @GetMapping("/{noteId}")
+    public ResponseEntity<NoteDetailsResponse> getNoteDetails(@PathVariable String noteId) {
+
+        NoteDto noteDto = this.noteService.getNoteDetails(noteId);
+
+        ModelMapper modelMapper = new ModelMapper();
+        NoteDetailsResponse noteDetailsResponse = modelMapper.map(noteDto, NoteDetailsResponse.class);
+
+        return ResponseEntity.ok(noteDetailsResponse);
     }
 
     @PostMapping

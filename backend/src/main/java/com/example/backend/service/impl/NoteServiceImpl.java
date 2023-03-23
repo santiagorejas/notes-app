@@ -137,5 +137,18 @@ public class NoteServiceImpl implements NoteService {
 
     }
 
+    @Override
+    public NoteDto getNoteDetails(String noteId) {
+
+        NoteEntity noteEntity = this.noteRepository
+                .findByNoteId(noteId)
+                .orElseThrow();
+
+        ModelMapper modelMapper = new ModelMapper();
+        NoteDto noteDto = modelMapper.map(noteEntity, NoteDto.class);
+
+        return noteDto;
+    }
+
 
 }
