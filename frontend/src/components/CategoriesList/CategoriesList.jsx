@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
 import CategoryCard from "../CategoryCard/CategoryCard";
+import classes from "./CategoriesList.module.css";
 
 const CategoriesList = () => {
   const {
@@ -18,13 +19,10 @@ const CategoriesList = () => {
   });
 
   return (
-    <div>
-      <h2 className="modal-subtitle">CategoriesList</h2>
-      <ul>
-        {!isLoading &&
-          categories.map((category) => <CategoryCard {...category} />)}
-      </ul>
-    </div>
+    <ul className={classes["categories-list"]}>
+      {!isLoading &&
+        categories.map((category) => <CategoryCard {...category} />)}
+    </ul>
   );
 };
 
