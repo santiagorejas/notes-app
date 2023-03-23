@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,5 +17,7 @@ public class NoteDto {
     private Date createdAt;
     private Date lastEdited;
     private boolean archived;
+    private List<CategoryDto> categories;
+    private List<String> categoriesId;
 
 }

@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,9 @@ public class NoteController {
     public ResponseEntity<NoteResponse> createNote(@Valid @RequestBody NoteRequest note) {
 
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT);
+
         NoteDto noteDto = modelMapper.map(note, NoteDto.class);
 
         NoteDto createdNoteDto = this.noteService.createNote(noteDto);
@@ -58,6 +62,8 @@ public class NoteController {
                                                    @PathVariable String noteId) {
 
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT);
         NoteDto noteDto = modelMapper.map(note, NoteDto.class);
         noteDto.setNoteId(noteId);
 

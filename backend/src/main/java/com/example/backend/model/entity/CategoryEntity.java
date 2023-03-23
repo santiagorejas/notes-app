@@ -1,10 +1,10 @@
 package com.example.backend.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,5 +23,8 @@ public class CategoryEntity {
 
     @Column(nullable = false, length = 30)
     private String name;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
+    private List<NoteEntity> notes = new ArrayList<>();
 
 }
