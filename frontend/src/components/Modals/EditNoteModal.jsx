@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FormControl,
   InputLabel,
@@ -38,6 +38,20 @@ const CreateNoteModal = (props) => {
     return data;
   });
 
+  const { data: noteDetails, isLoading: loadingNoteDetails } = useQuery(
+    ["notes-details", { noteId }],
+    async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/notes/${noteId}`
+      );
+
+      const data = await response.json();
+
+      return data;
+    },
+    { enabled: editing }
+  );
+
   const queryClient = useQueryClient();
 
   const editNoteMutation = useMutation(
@@ -63,9 +77,9 @@ const CreateNoteModal = (props) => {
 
   const formik = useFormik({
     initialValues: {
-      title: title || "",
-      content: content || "",
-      categories: categories || [],
+      title: "",
+      content: "",
+      categoriesId: [],
     },
     onSubmit: async (values, actions) => {
       editNoteMutation.mutate({
@@ -75,6 +89,17 @@ const CreateNoteModal = (props) => {
       actions.resetForm();
     },
   });
+
+  useEffect(() => {
+    if (noteDetails) {
+      formik.setFieldValue("title", noteDetails.title);
+      formik.setFieldValue("content", noteDetails.content);
+      formik.setFieldValue(
+        "categoriesId",
+        noteDetails.categories.map((category) => category.categoryId)
+      );
+    }
+  }, [noteDetails]);
 
   return (
     <Modal onClose={onClose}>
@@ -99,14 +124,14 @@ const CreateNoteModal = (props) => {
             <InputLabel id="categories-label">Categories</InputLabel>
             <Select
               labelId="categories-label"
-              id="categories"
-              name="categories"
+              id="categoriesId"
+              name="categoriesId"
               multiple
-              value={formik.values.categories}
+              value={formik.values.categoriesId}
               input={<OutlinedInput label="Categories" />}
               MenuProps={MenuProps}
               onChange={(e) =>
-                formik.setFieldValue("categories", e.target.value)
+                formik.setFieldValue("categoriesId", e.target.value)
               }
             >
               {fetchedCategories.map((category) => (

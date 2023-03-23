@@ -3,6 +3,7 @@ import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import DeleteNoteModal from "../Modals/DeleteNoteModal";
+import EditNoteModal from "../Modals/EditNoteModal";
 import NoteCard from "../NoteCard/NoteCard";
 import classes from "./NotesList.module.css";
 
@@ -11,6 +12,7 @@ const NotesList = (props) => {
   const [pageSize, setPageSize] = useState(0);
   const [clickedNote, setClickedNote] = useState({});
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -60,12 +62,24 @@ const NotesList = (props) => {
     setIsDeleting(true);
   };
 
+  const onUpdateHandler = (note) => {
+    setClickedNote(note);
+    setIsUpdating(true);
+  };
+
   return (
     <>
       {isDeleting && (
         <DeleteNoteModal
           {...clickedNote}
           onClose={() => setIsDeleting(false)}
+        />
+      )}
+      {isUpdating && (
+        <EditNoteModal
+          noteId={clickedNote.noteId}
+          onClose={() => setIsUpdating(false)}
+          editing={true}
         />
       )}
       <div className={classes["notes-list"]}>
@@ -77,6 +91,7 @@ const NotesList = (props) => {
                 {...note}
                 onArchiveHandler={archiveNoteMutation.mutate}
                 onDeleteHandler={onDeleteHandler}
+                onUpdateHandler={onUpdateHandler}
               />
             ))}
         </ul>

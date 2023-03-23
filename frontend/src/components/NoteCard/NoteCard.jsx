@@ -11,6 +11,7 @@ const NoteCard = (props) => {
     noteId,
     onArchiveHandler,
     onDeleteHandler,
+    onUpdateHandler,
   } = props;
 
   return (
@@ -27,7 +28,7 @@ const NoteCard = (props) => {
         >
           <AiFillFolderOpen />
         </button>
-        <button>
+        <button onClick={() => onUpdateHandler(props)}>
           <AiFillEdit />
         </button>
         <button onClick={() => onDeleteHandler(props)}>
