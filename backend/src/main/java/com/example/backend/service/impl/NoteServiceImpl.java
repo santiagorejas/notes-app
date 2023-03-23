@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,7 +28,11 @@ public class NoteServiceImpl implements NoteService {
 
         ModelMapper modelMapper = new ModelMapper();
         NoteEntity noteEntity = modelMapper.map(noteDto, NoteEntity.class);
-        noteEntity.setLastEdited(new Date());
+
+        Date date = new Date();
+        noteEntity.setCreatedAt(date);
+        noteEntity.setLastEdited(date);
+
         noteEntity.setNoteId(UUID.randomUUID().toString());
 
         NoteEntity createdNodeEntity = this.noteRepository.save(noteEntity);
@@ -40,7 +45,8 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public PagedDto<NoteDto> getNotes(int page, int size, boolean archived) {
 
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        Pageable pageable = PageRequest.of(page, size, sort);
 
         Page<NoteEntity> notesEntities = this.noteRepository
                 .findAllByArchived(archived, pageable)

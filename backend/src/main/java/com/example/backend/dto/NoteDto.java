@@ -13,6 +13,7 @@ public class NoteDto {
     private String noteId;
     private String title;
     private String content;
+    private Date createdAt;
     private Date lastEdited;
     private boolean archived;
 

@@ -30,6 +30,9 @@ public class NoteEntity {
     private String content;
 
     @Column(nullable = false)
+    private Date createdAt;
+
+    @Column(nullable = false)
     private Date lastEdited;
 
     @Column(nullable = false)
