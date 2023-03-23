@@ -1,3 +1,5 @@
+import { Pagination } from "@mui/material";
+import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useHttp } from "../../hooks/use-http";
 import NoteCard from "../NoteCard/NoteCard";
@@ -7,6 +9,7 @@ import classes from "./NotesList.module.css";
 const NotesList = () => {
   const [notes, setNotes] = useState([]);
   const [showArchived, setShowArchived] = useState(false);
+  const [pageSize, setPageSize] = useState(0);
   const [page, setPage] = useState(1);
 
   const { sendRequest, isLoading, error, clearError } = useHttp();
@@ -20,6 +23,7 @@ const NotesList = () => {
       );
 
       setNotes(data.content);
+      setPageSize(data.totalPages);
     };
 
     fetchNotes();
@@ -36,6 +40,7 @@ const NotesList = () => {
             className={classes["notes-list__archived-btn"]}
             onClick={() => {
               setShowArchived((pre) => !pre);
+              setPage(1);
             }}
           >
             {showArchived ? "Show unarchived" : "Show archived"}
@@ -47,6 +52,17 @@ const NotesList = () => {
           <NoteCard key={note.noteId} {...note} />
         ))}
       </ul>
+      <Stack mt={3.5}>
+        <Pagination
+          className={classes["notes-list__pagination"]}
+          count={pageSize}
+          page={page}
+          onChange={(e, value) => {
+            setPage(value);
+          }}
+          color="primary"
+        />
+      </Stack>
     </div>
   );
 };
