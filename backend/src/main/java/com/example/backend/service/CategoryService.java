@@ -8,4 +8,6 @@ public interface CategoryService {
     CategoryDto createCategory(CategoryDto categoryDto);
 
     List<CategoryDto> getCategories();
+
+    void deleteCategory(String categoryId);
 }

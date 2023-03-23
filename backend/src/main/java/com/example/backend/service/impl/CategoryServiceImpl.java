@@ -46,4 +46,15 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoriesDtos;
     }
+
+    @Override
+    public void deleteCategory(String categoryId) {
+
+        CategoryEntity categoryEntity = this.categoryRepository
+                .findByCategoryId(categoryId)
+                .orElseThrow();
+
+        this.categoryRepository.delete(categoryEntity);
+
+    }
 }

@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.dto.CategoryDto;
 import com.example.backend.model.request.CategoryRequest;
 import com.example.backend.model.response.CategoryResponse;
+import com.example.backend.model.response.MessageResponse;
 import com.example.backend.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,14 @@ public class CategoryController {
         CategoryResponse categoryResponse = modelMapper.map(createdCategoryDto, CategoryResponse.class);
 
         return ResponseEntity.ok(categoryResponse);
+    }
+
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<MessageResponse> deleteCategory(@PathVariable String categoryId) {
+
+        this.categoryService.deleteCategory(categoryId);
+
+        return ResponseEntity.ok(new MessageResponse("Category deleted successfully."));
     }
 
 }
