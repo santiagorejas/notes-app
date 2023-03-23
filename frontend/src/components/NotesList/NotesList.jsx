@@ -29,6 +29,12 @@ const NotesList = () => {
     fetchNotes();
   }, [showArchived, page]);
 
+  const onRemoveArchivedNote = (noteId, archived) => {
+    if (archived != showArchived) {
+      setNotes((pre) => pre.filter((note) => note.noteId != noteId));
+    }
+  };
+
   return (
     <div className={classes["notes-list"]}>
       <div className={classes["notes-list__header"]}>
@@ -49,7 +55,11 @@ const NotesList = () => {
       </div>
       <ul className={classes["notes-container"]}>
         {notes.map((note) => (
-          <NoteCard key={note.noteId} {...note} />
+          <NoteCard
+            key={note.noteId}
+            {...note}
+            onRemoveArchivedNote={onRemoveArchivedNote}
+          />
         ))}
       </ul>
       <Stack mt={3.5}>
