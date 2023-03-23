@@ -1,39 +1,58 @@
 import { Pagination } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useEffect, useState } from "react";
-import { useHttp } from "../../hooks/use-http";
+import React, { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import NoteCard from "../NoteCard/NoteCard";
 import Button from "../UI/Button/Button";
 import classes from "./NotesList.module.css";
 
 const NotesList = () => {
-  const [notes, setNotes] = useState([]);
   const [showArchived, setShowArchived] = useState(false);
   const [pageSize, setPageSize] = useState(0);
   const [page, setPage] = useState(1);
 
-  const { sendRequest, isLoading, error, clearError } = useHttp();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      const data = await sendRequest(
-        `${import.meta.env.VITE_API_URL}/api/v1/notes?page=${
-          page - 1
-        }&size=10&archived=${showArchived}`
+  const {
+    data: notes,
+    isLoading,
+    error,
+  } = useQuery(["notes", { page, showArchived }], async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/v1/notes?page=${
+        page - 1
+      }&size=10&archived=${showArchived}`
+    );
+
+    const data = await response.json();
+    setPageSize(data.totalPages);
+
+    return data.content;
+  });
+
+  const archiveNoteMutation = useMutation(
+    async ({ noteId, archive }) => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/notes/${noteId}/archive`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ archive: archive }),
+        }
       );
 
-      setNotes(data.content);
-      setPageSize(data.totalPages);
-    };
+      const data = await response.json();
 
-    fetchNotes();
-  }, [showArchived, page]);
-
-  const onRemoveArchivedNote = (noteId, archived) => {
-    if (archived != showArchived) {
-      setNotes((pre) => pre.filter((note) => note.noteId != noteId));
+      return data;
+    },
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("notes");
+      },
     }
-  };
+  );
 
   return (
     <div className={classes["notes-list"]}>
@@ -54,13 +73,14 @@ const NotesList = () => {
         </div>
       </div>
       <ul className={classes["notes-container"]}>
-        {notes.map((note) => (
-          <NoteCard
-            key={note.noteId}
-            {...note}
-            onRemoveArchivedNote={onRemoveArchivedNote}
-          />
-        ))}
+        {!isLoading &&
+          notes.map((note) => (
+            <NoteCard
+              key={note.noteId}
+              {...note}
+              onArchiveHandler={archiveNoteMutation.mutate}
+            />
+          ))}
       </ul>
       <Stack mt={3.5}>
         <Pagination
