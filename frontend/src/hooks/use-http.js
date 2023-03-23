@@ -19,6 +19,7 @@ export const useHttp = () => {
           headers,
           signal: httpAbortController.signal,
         });
+        console.log("DATAAA: " + JSON.stringify(response));
 
         const data = await response.json();
 
