@@ -8,10 +8,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoryController {
 
     private final CategoryService categoryService;
+
+    @GetMapping
+    public ResponseEntity<List<CategoryResponse>> getCategories() {
+
+        List<CategoryDto> categories = this.categoryService.getCategories();
+
+        ModelMapper modelMapper = new ModelMapper();
+        List<CategoryResponse> categoriesResponse = categories
+                .stream()
+                .map(categoryDto -> modelMapper.map(categoryDto, CategoryResponse.class))
+                .toList();
+
+        return ResponseEntity.ok(categoriesResponse);
+    }
 
     @PostMapping
     public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CategoryRequest category) {
@@ -31,7 +44,6 @@ public class CategoryController {
         CategoryResponse categoryResponse = modelMapper.map(createdCategoryDto, CategoryResponse.class);
 
         return ResponseEntity.ok(categoryResponse);
-
     }
 
 }
