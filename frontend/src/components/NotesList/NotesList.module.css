@@ -7,6 +7,33 @@
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
+.notes-list__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.notes-list__title {
+  font-size: 4rem;
+  margin-right: 2rem;
+}
+
+.notes-list__archived-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-left: 1rem;
+  color: #2980b9;
+}
+
+.notes-list__buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .notes-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
