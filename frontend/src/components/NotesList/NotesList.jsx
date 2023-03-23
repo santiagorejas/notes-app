@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHttp } from "../../hooks/use-http";
-import NoteCard from "./NoteCard/NoteCard";
+import NoteCard from "../NoteCard/NoteCard";
 import classes from "./NotesList.module.css";
 
 const NotesList = () => {
@@ -22,11 +22,13 @@ const NotesList = () => {
   }, []);
 
   return (
-    <div>
+    <div className={classes["notes-list"]}>
       <h1>NotesList</h1>
-      {notes.map((note) => (
-        <NoteCard key={note.noteId} {...note} />
-      ))}
+      <ul className={classes["notes-container"]}>
+        {notes.map((note) => (
+          <NoteCard key={note.noteId} {...note} />
+        ))}
+      </ul>
     </div>
   );
 };

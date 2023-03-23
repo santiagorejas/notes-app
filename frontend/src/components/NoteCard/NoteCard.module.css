@@ -1,0 +1,34 @@
+.note-card {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.note-card__last-edited {
+  font-size: 0.8;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  width: fit-content;
+  background-color: #f9f9f9;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.note-card__left-side {
+  width: 75%;
+}
+
+.note-card__right-side {
+  width: 25%;
+}
+
+.note-card__right-side button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin: 0.2rem;
+}
