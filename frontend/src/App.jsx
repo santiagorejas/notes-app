@@ -10,12 +10,10 @@ const queryClient = new QueryClient();
 function App() {
   const [page, setPage] = useState(1);
   const [showArchived, setShowArchived] = useState(false);
-  const [isEditingCategories, setIsEditingCategories] = useState(false);
 
   return (
     <div className="App">
       <QueryClientProvider client={queryClient}>
-        {isEditingCategories && <EditCategoriesModal />}
         <Header
           onShowArchivedClick={() => {
             setShowArchived((pre) => !pre);

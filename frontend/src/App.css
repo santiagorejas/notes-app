@@ -14,6 +14,11 @@
   font-weight: 300;
 }
 
+.modal-subtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
 .modal-btns {
   margin-top: 2rem;
   display: flex;
