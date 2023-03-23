@@ -4,13 +4,11 @@ import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import DeleteNoteModal from "../Modals/DeleteNoteModal";
 import NoteCard from "../NoteCard/NoteCard";
-import Button from "../UI/Button/Button";
 import classes from "./NotesList.module.css";
 
-const NotesList = () => {
-  const [showArchived, setShowArchived] = useState(false);
+const NotesList = (props) => {
+  const { showArchived, page, setPage } = props;
   const [pageSize, setPageSize] = useState(0);
-  const [page, setPage] = useState(1);
   const [clickedNote, setClickedNote] = useState({});
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -71,22 +69,6 @@ const NotesList = () => {
         />
       )}
       <div className={classes["notes-list"]}>
-        <div className={classes["notes-list__header"]}>
-          <h1 className={classes["notes-list__title"]}>NotesList</h1>
-          <div className={classes["notes-list__buttons"]}>
-            <Button>Create Note</Button>
-            <Button>Create Category</Button>
-            <button
-              className={classes["notes-list__archived-btn"]}
-              onClick={() => {
-                setShowArchived((pre) => !pre);
-                setPage(1);
-              }}
-            >
-              {showArchived ? "Show unarchived" : "Show archived"}
-            </button>
-          </div>
-        </div>
         <ul className={classes["notes-container"]}>
           {!isLoading &&
             notes.map((note) => (

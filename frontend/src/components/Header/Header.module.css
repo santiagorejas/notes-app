@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-inline: 2rem;
+}
+
+.header__title {
+  font-size: 4rem;
+  margin-right: 2rem;
+}
+
+.header__archived-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-left: 1rem;
+  color: #2980b9;
+}
+
+.header__buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
