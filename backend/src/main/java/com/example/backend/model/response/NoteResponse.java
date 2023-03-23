@@ -12,5 +12,6 @@ public class NoteResponse {
     private String noteId;
     private String title;
     private Date lastEdited;
+    private Boolean archived;
 
 }
