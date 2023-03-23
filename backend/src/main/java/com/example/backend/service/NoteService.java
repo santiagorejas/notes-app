@@ -9,4 +9,6 @@ public interface NoteService {
     PagedDto<NoteDto> getNotes(int page, int size, boolean archived);
 
     NoteDto updateNote(NoteDto noteDto);
+
+    void deleteNote(String noteId);
 }

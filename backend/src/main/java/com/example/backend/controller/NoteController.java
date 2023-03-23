@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.dto.NoteDto;
 import com.example.backend.dto.PagedDto;
 import com.example.backend.model.request.NoteRequest;
+import com.example.backend.model.response.MessageResponse;
 import com.example.backend.model.response.NoteResponse;
 import com.example.backend.model.response.PagedResponse;
 import com.example.backend.service.NoteService;
@@ -65,6 +66,14 @@ public class NoteController {
         NoteResponse noteResponse = modelMapper.map(updatedNoteDto, NoteResponse.class);
 
         return ResponseEntity.ok(noteResponse);
+    }
+
+    @DeleteMapping("/{noteId}")
+    public ResponseEntity<MessageResponse> deleteNote(@PathVariable String noteId) {
+
+        this.noteService.deleteNote(noteId);
+
+        return ResponseEntity.ok(new MessageResponse("Note deleted successfully."));
     }
 
 

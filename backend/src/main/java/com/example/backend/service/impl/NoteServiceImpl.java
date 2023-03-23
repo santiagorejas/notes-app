@@ -90,4 +90,14 @@ public class NoteServiceImpl implements NoteService {
 
     }
 
+    @Override
+    public void deleteNote(String noteId) {
+
+        NoteEntity noteEntity = this.noteRepository
+                .findByNoteId(noteId)
+                .orElseThrow();
+
+        this.noteRepository.delete(noteEntity);
+    }
+
 }
