@@ -20,8 +20,11 @@ public class NoteEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 36)
     private String noteId;
+
+    @Column(nullable = false, length = 120)
+    private String title;
 
     @Column(nullable = false)
     private String content;
