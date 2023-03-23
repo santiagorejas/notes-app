@@ -10,7 +10,7 @@ import {
 import { useFormik } from "formik";
 import Modal from "../UI/Modal/Modal";
 import Button from "../UI/Button/Button";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const MenuProps = {
   PaperProps: {
@@ -22,18 +22,7 @@ const MenuProps = {
 };
 
 const CreateNoteModal = (props) => {
-  const { editing, title, content, categories, onClose } = props;
-
-  const formik = useFormik({
-    initialValues: {
-      title: title || "",
-      content: content || "",
-      categories: categories || [],
-    },
-    onSubmit: async (values) => {
-      console.log(values);
-    },
-  });
+  const { editing, title, content, categories, onClose, noteId } = props;
 
   const {
     data: fetchedCategories,
@@ -49,11 +38,49 @@ const CreateNoteModal = (props) => {
     return data;
   });
 
+  const queryClient = useQueryClient();
+
+  const editNoteMutation = useMutation(
+    async ({ note, noteId }) => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/notes${
+          editing ? `/${noteId}` : ""
+        }`,
+        {
+          method: editing ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(note),
+        }
+      );
+    },
+    {
+      onSuccess: () => {
+        onClose();
+        queryClient.invalidateQueries("notes");
+      },
+    }
+  );
+
+  const formik = useFormik({
+    initialValues: {
+      title: title || "",
+      content: content || "",
+      categories: categories || [],
+    },
+    onSubmit: async (values, actions) => {
+      editNoteMutation.mutate({
+        note: values,
+        noteId,
+      });
+      actions.resetForm();
+    },
+  });
+
   return (
     <Modal onClose={onClose}>
       <h1 className="modal-title">{editing ? "Edit note" : "Create note"}</h1>
       {!isLoading && (
-        <form className="form">
+        <form className="form" onSubmit={formik.handleSubmit}>
           <TextField
             label="Title"
             id="title"
@@ -89,7 +116,7 @@ const CreateNoteModal = (props) => {
               ))}
             </Select>
           </FormControl>
-          <Button>{editing ? "Edit" : "Create"}</Button>
+          <Button type="submit">{editing ? "Edit" : "Create"}</Button>
           <Button onClick={onClose}>Close</Button>
         </form>
       )}
