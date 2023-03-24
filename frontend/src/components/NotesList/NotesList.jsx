@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import DeleteNoteModal from "../Modals/DeleteNoteModal";
 import EditNoteModal from "../Modals/EditNoteModal";
 import NoteCard from "../NoteCard/NoteCard";
+import CategorySelector from "../CategorySelector/CategorySelector";
 import classes from "./NotesList.module.css";
 
 const NotesList = (props) => {
@@ -13,6 +14,7 @@ const NotesList = (props) => {
   const [clickedNote, setClickedNote] = useState({});
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [category, setCategory] = useState();
 
   const queryClient = useQueryClient();
 
@@ -20,11 +22,13 @@ const NotesList = (props) => {
     data: notes,
     isLoading,
     error,
-  } = useQuery(["notes", { page, showArchived }], async () => {
+  } = useQuery(["notes", { page, showArchived, category }], async () => {
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/api/v1/notes?page=${
         page - 1
-      }&size=10&archived=${showArchived}`
+      }&size=10&archived=${showArchived}${
+        category ? `&category=${category}` : ""
+      }`
     );
 
     const data = await response.json();
@@ -83,6 +87,7 @@ const NotesList = (props) => {
         />
       )}
       <div className={classes["notes-list"]}>
+        <CategorySelector category={category} setCategory={setCategory} />
         <ul className={classes["notes-container"]}>
           {!isLoading &&
             notes.map((note) => (

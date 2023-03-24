@@ -1,0 +1,7 @@
+.category-selector-container {
+  width: 100%;
+  max-width: 20rem;
+  margin: auto;
+  display: grid;
+  margin-bottom: 1.5rem;
+}
