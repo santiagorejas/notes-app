@@ -29,9 +29,10 @@ public class NoteController {
     @GetMapping
     public ResponseEntity<PagedResponse<NoteResponse>> getNotes(@RequestParam(name = "page", defaultValue = "0") int page,
                                                                 @RequestParam(name = "size", defaultValue = "20") int size,
-                                                                @RequestParam(name = "archived", defaultValue = "false") boolean archived) {
+                                                                @RequestParam(name = "archived", defaultValue = "false") boolean archived,
+                                                                @RequestParam(name = "category", required = false) String category) {
 
-        PagedDto<NoteDto> pagedDto = this.noteService.getNotes(page, size, archived);
+        PagedDto<NoteDto> pagedDto = this.noteService.getNotes(page, size, archived, category);
 
         ModelMapper modelMapper = new ModelMapper();
         Type mapType = new TypeToken<PagedResponse<NoteResponse>>() {}.getType();

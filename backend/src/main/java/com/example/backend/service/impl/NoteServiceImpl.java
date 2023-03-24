@@ -57,14 +57,23 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public PagedDto<NoteDto> getNotes(int page, int size, boolean archived) {
+    public PagedDto<NoteDto> getNotes(int page, int size, boolean archived, String category) {
 
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<NoteEntity> notesEntities = this.noteRepository
-                .findAllByArchived(archived, pageable)
-                .orElseThrow();
+        Page<NoteEntity> notesEntities;
+
+        if (category != null) {
+            notesEntities = this.noteRepository
+                    .findAllByArchivedAndCategories_CategoryId(archived, category, pageable)
+                    .orElseThrow();
+        } else {
+            notesEntities = this.noteRepository
+                    .findAllByArchived(archived, pageable)
+                    .orElseThrow();
+        }
+
 
         ModelMapper modelMapper = new ModelMapper();
         List<NoteDto> noteDtoList = notesEntities

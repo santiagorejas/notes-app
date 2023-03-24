@@ -2,12 +2,11 @@ package com.example.backend.service;
 
 import com.example.backend.dto.NoteDto;
 import com.example.backend.dto.PagedDto;
-import com.example.backend.model.request.ArchiveRequest;
 
 public interface NoteService {
     NoteDto createNote(NoteDto noteDto);
 
-    PagedDto<NoteDto> getNotes(int page, int size, boolean archived);
+    PagedDto<NoteDto> getNotes(int page, int size, boolean archived, String category);
 
     NoteDto updateNote(NoteDto noteDto);
 
