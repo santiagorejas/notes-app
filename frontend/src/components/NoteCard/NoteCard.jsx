@@ -12,12 +12,18 @@ const NoteCard = (props) => {
     onArchiveHandler,
     onDeleteHandler,
     onUpdateHandler,
+    onSeeDetailsHandler,
   } = props;
 
   return (
     <li className={classes["note-card"]}>
       <div className={classes["note-card__left-side"]}>
-        <h1>{title}</h1>
+        <h1
+          className={classes["note-card__title"]}
+          onClick={() => onSeeDetailsHandler(props)}
+        >
+          {title}
+        </h1>
         <p className={classes["note-card__last-edited"]}>
           Last edited: {formatDate(lastEdited)}
         </p>

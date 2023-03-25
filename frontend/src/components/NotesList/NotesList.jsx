@@ -8,6 +8,7 @@ import NoteCard from "../NoteCard/NoteCard";
 import CategorySelector from "../CategorySelector/CategorySelector";
 import classes from "./NotesList.module.css";
 import LoadingSpinner from "../UI/LoadingSpinner/LoadingSpinner";
+import ViewNoteDetailsModal from "../Modals/ViewNoteDetailsModal";
 
 const NotesList = (props) => {
   const { showArchived, page, setPage } = props;
@@ -15,6 +16,7 @@ const NotesList = (props) => {
   const [clickedNote, setClickedNote] = useState({});
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isViewingDetails, setIsViewingDetails] = useState(false);
   const [category, setCategory] = useState();
 
   const queryClient = useQueryClient();
@@ -72,6 +74,11 @@ const NotesList = (props) => {
     setIsUpdating(true);
   };
 
+  const onSeeDetailsHandler = (note) => {
+    setClickedNote(note);
+    setIsViewingDetails(true);
+  };
+
   return (
     <>
       {isDeleting && (
@@ -87,6 +94,12 @@ const NotesList = (props) => {
           editing={true}
         />
       )}
+      {isViewingDetails && (
+        <ViewNoteDetailsModal
+          noteId={clickedNote.noteId}
+          onClose={() => setIsViewingDetails(false)}
+        />
+      )}
       <div className={classes["notes-list"]}>
         <CategorySelector category={category} setCategory={setCategory} />
         {isLoading ? (
@@ -100,6 +113,7 @@ const NotesList = (props) => {
                 onArchiveHandler={archiveNoteMutation.mutate}
                 onDeleteHandler={onDeleteHandler}
                 onUpdateHandler={onUpdateHandler}
+                onSeeDetailsHandler={onSeeDetailsHandler}
               />
             ))}
           </ul>
