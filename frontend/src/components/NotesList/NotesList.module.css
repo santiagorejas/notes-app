@@ -9,11 +9,21 @@
 
 .notes-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
   gap: 1rem;
   list-style: none;
+  width: 100%;
 }
 
 .notes-list__pagination {
   margin: auto !important;
+}
+
+@media (max-width: 30rem) {
+  .notes-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    row-gap: 1rem;
+  }
 }

@@ -2,7 +2,6 @@
   display: flex;
   align-items: center;
   margin-bottom: 2rem;
-  padding-inline: 2rem;
 }
 
 .header__title {
@@ -24,4 +23,22 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+@media (max-width: 50rem) {
+  .header {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .header__title {
+    margin-bottom: 2rem;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 30rem) {
+  .header__buttons {
+    flex-direction: column;
+  }
 }

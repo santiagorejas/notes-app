@@ -32,3 +32,18 @@
   font-size: 1.5rem;
   margin: 0.2rem;
 }
+
+@media (max-width: 30rem) {
+  .note-card__left-side {
+    width: 80%;
+  }
+
+  .note-card__right-side {
+    width: 20%;
+  }
+
+  .note-card__right-side {
+    display: flex;
+    flex-direction: column;
+  }
+}
