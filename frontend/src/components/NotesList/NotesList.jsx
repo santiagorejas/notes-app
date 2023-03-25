@@ -7,6 +7,7 @@ import EditNoteModal from "../Modals/EditNoteModal";
 import NoteCard from "../NoteCard/NoteCard";
 import CategorySelector from "../CategorySelector/CategorySelector";
 import classes from "./NotesList.module.css";
+import LoadingSpinner from "../UI/LoadingSpinner/LoadingSpinner";
 
 const NotesList = (props) => {
   const { showArchived, page, setPage } = props;
@@ -88,9 +89,11 @@ const NotesList = (props) => {
       )}
       <div className={classes["notes-list"]}>
         <CategorySelector category={category} setCategory={setCategory} />
-        <ul className={classes["notes-container"]}>
-          {!isLoading &&
-            notes.map((note) => (
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <ul className={classes["notes-container"]}>
+            {notes.map((note) => (
               <NoteCard
                 key={note.noteId}
                 {...note}
@@ -99,7 +102,8 @@ const NotesList = (props) => {
                 onUpdateHandler={onUpdateHandler}
               />
             ))}
-        </ul>
+          </ul>
+        )}
         <Stack mt={3.5}>
           <Pagination
             className={classes["notes-list__pagination"]}

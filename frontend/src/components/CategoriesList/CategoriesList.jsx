@@ -1,6 +1,7 @@
 import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import CategoryCard from "../CategoryCard/CategoryCard";
+import LoadingSpinner from "../UI/LoadingSpinner/LoadingSpinner";
 import classes from "./CategoriesList.module.css";
 
 const CategoriesList = () => {
@@ -35,16 +36,21 @@ const CategoriesList = () => {
   );
 
   return (
-    <ul className={classes["categories-list"]}>
-      {!isLoading &&
-        categories.map((category) => (
-          <CategoryCard
-            ket={category.categoryId}
-            {...category}
-            onDeleteCategory={deleteCategoryMutation.mutate}
-          />
-        ))}
-    </ul>
+    <>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <ul className={classes["categories-list"]}>
+          {categories.map((category) => (
+            <CategoryCard
+              ket={category.categoryId}
+              {...category}
+              onDeleteCategory={deleteCategoryMutation.mutate}
+            />
+          ))}
+        </ul>
+      )}
+    </>
   );
 };
 

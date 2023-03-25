@@ -11,6 +11,7 @@ import { useFormik } from "formik";
 import Modal from "../UI/Modal/Modal";
 import Button from "../UI/Button/Button";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import LoadingSpinner from "../UI/LoadingSpinner/LoadingSpinner";
 
 const MenuProps = {
   PaperProps: {
@@ -104,7 +105,9 @@ const CreateNoteModal = (props) => {
   return (
     <Modal onClose={onClose}>
       <h1 className="modal-title">{editing ? "Edit note" : "Create note"}</h1>
-      {!isLoading && (
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
         <form className="form" onSubmit={formik.handleSubmit}>
           <TextField
             label="Title"

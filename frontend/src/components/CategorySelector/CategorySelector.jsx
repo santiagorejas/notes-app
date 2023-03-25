@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useQuery } from "react-query";
 import classes from "./CategorySelector.module.css";
+import LoadingSpinner from "../UI/LoadingSpinner/LoadingSpinner";
 
 const MenuProps = {
   PaperProps: {
@@ -37,7 +38,9 @@ const CategorySelector = (props) => {
 
   return (
     <div className={classes["category-selector-container"]}>
-      {!isLoading && (
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
         <FormControl sx={{ m: 1, minWidth: 80 }}>
           <InputLabel id="categories-label">Categories</InputLabel>
           <Select
