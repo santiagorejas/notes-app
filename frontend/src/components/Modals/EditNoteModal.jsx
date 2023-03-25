@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import Modal from "../UI/Modal/Modal";
 import Button from "../UI/Button/Button";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -82,6 +83,13 @@ const CreateNoteModal = (props) => {
       content: "",
       categoriesId: [],
     },
+    validationSchema: Yup.object({
+      title: Yup.string().required(),
+      content: Yup.string().max(
+        255,
+        "Content must be less than 255 characters."
+      ),
+    }),
     onSubmit: async (values, actions) => {
       editNoteMutation.mutate({
         note: values,
@@ -115,14 +123,22 @@ const CreateNoteModal = (props) => {
             name="title"
             value={formik.values.title}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
           />
+          {formik.errors.title && formik.touched.title && (
+            <p className="text-error">{formik.errors.title}</p>
+          )}
           <TextField
             label="Content"
             id="content"
             name="content"
             value={formik.values.content}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
           />
+          {formik.errors.content && formik.touched.content && (
+            <p className="text-error">{formik.errors.content}</p>
+          )}
           <FormControl>
             <InputLabel id="categories-label">Categories</InputLabel>
             <Select

@@ -38,3 +38,10 @@
   padding: 0.5rem;
   border: #ccc 1px solid;
 }
+
+.text-error {
+  font-size: 0.9rem;
+  margin: 0.5rem;
+  color: red;
+  font-weight: bold;
+}
