@@ -1,5 +1,4 @@
-version: '3.5'
-
+version: "3.5"
 
 services:
   postgres:
@@ -10,12 +9,37 @@ services:
       POSTGRES_PASSWORD: SomeSecretPassword
       PGDATA: /data/postgres
     volumes:
-       - postgres-db:/data/postgres
+      - postgres-db:/data/postgres
     ports:
       - "5432:5432"
-
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "super_admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  backend:
+    container_name: backend
+    build: "./backend"
+    environment:
+      DB_NAME: postgres
+      DB_PASSWORD: SomeSecretPassword
+      DB_URL: jdbc:postgresql://postgres:5432/postgres
+      DB_USERNAME: super_admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+  frontend:
+    container_name: frontend
+    build: "./frontend"
+    environment:
+      VITE_API_URL: http://localhost:8080
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
 
 volumes:
   postgres-db:
     driver: local
-
