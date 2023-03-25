@@ -30,6 +30,7 @@ const CreateNoteModal = (props) => {
     data: fetchedCategories,
     isLoading,
     error,
+    isError,
   } = useQuery("categories", async () => {
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/api/v1/categories`
@@ -115,6 +116,8 @@ const CreateNoteModal = (props) => {
       <h1 className="modal-title">{editing ? "Edit note" : "Create note"}</h1>
       {isLoading ? (
         <LoadingSpinner />
+      ) : isError ? (
+        <p className="text-error">{error.message}</p>
       ) : (
         <form className="form" onSubmit={formik.handleSubmit}>
           <TextField

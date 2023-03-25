@@ -25,6 +25,7 @@ const NotesList = (props) => {
     data: notes,
     isLoading,
     error,
+    isError,
   } = useQuery(["notes", { page, showArchived, category }], async () => {
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/api/v1/notes?page=${
@@ -104,6 +105,8 @@ const NotesList = (props) => {
         <CategorySelector category={category} setCategory={setCategory} />
         {isLoading ? (
           <LoadingSpinner />
+        ) : isError ? (
+          <p className="text-error">{error.message}</p>
         ) : (
           <ul className={classes["notes-container"]}>
             {notes.map((note) => (

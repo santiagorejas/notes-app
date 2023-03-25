@@ -26,20 +26,31 @@ const CategorySelector = (props) => {
     data: categories,
     isLoading,
     error,
-  } = useQuery("categories", async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/v1/categories`
-    );
+    isError,
+  } = useQuery(
+    "categories",
+    async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/categories`
+      );
 
-    const data = await response.json();
+      const data = await response.json();
 
-    return data;
-  });
+      return data;
+    },
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
 
   return (
     <div className={classes["category-selector-container"]}>
       {isLoading ? (
         <LoadingSpinner />
+      ) : isError ? (
+        <p className="text-error">{error.message}</p>
       ) : (
         <FormControl sx={{ m: 1, minWidth: 80 }}>
           <InputLabel id="categories-label">Categories</InputLabel>

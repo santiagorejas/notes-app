@@ -9,15 +9,24 @@ const CategoriesList = () => {
     data: categories,
     isLoading,
     error,
-  } = useQuery("categories", async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/v1/categories`
-    );
+    isError,
+  } = useQuery(
+    "categories",
+    async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/categories`
+      );
 
-    const data = await response.json();
+      const data = await response.json();
 
-    return data;
-  });
+      return data;
+    },
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
 
   const queryClient = useQueryClient();
 
@@ -41,13 +50,17 @@ const CategoriesList = () => {
         <LoadingSpinner />
       ) : (
         <ul className={classes["categories-list"]}>
-          {categories.map((category) => (
-            <CategoryCard
-              ket={category.categoryId}
-              {...category}
-              onDeleteCategory={deleteCategoryMutation.mutate}
-            />
-          ))}
+          {isError ? (
+            <p className="text-error">{error.message}</p>
+          ) : (
+            categories.map((category) => (
+              <CategoryCard
+                ket={category.categoryId}
+                {...category}
+                onDeleteCategory={deleteCategoryMutation.mutate}
+              />
+            ))
+          )}
         </ul>
       )}
     </>
