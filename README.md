@@ -1,4 +1,4 @@
-# GitHubsantiagorejas-Ensolvers-Challenge
+# Notes App
 To run the program:
 `docker-compose up`
 
